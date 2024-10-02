@@ -30,12 +30,60 @@ x_{n}=x_{n−1}−α×f′(x_{n−1})
 This formula is designed based on the understanding that the farther you are from the minimum, the steeper the slope. If the slope is negative (indicating you are left of the minimum), you should move right. And, if you are far from the minimum, you take larger steps; if you are near, you take smaller steps. The presence of the derivative in the formula adjusts your step automatically—large negative slopes push you significantly forward, and positive slopes pull you back.
 
 We can adjust the α value, often called the learning rate, to control how quickly we approach this minimum. Once the derivative (the slope) nears zero, indicating proximity to the minimum, we can set a threshold to stop further iterations if the magnitude of f′(x) is sufficiently small.
-The animation on the left illustrates the concept using the function f(x)= x^2 + 2.
 
-Building on our understanding of Gradient Descent for single-variable functions, let's extend these concepts to the multivariable scenarios typical in machine learning. In these applications, cost functions often depend on multiple parameters that must be optimized simultaneously to enhance prediction accuracy. In machine learning, we frequently deal with models that involve several parameters. For functions of more than one variable, such as a cost function Cost(θ0,θ1,…,θn), the Gradient Descent formula generalizes as follows:
+**MULTIVARIABLE GRADIENT DESCENT**
 
-θ_{i} = θ_{i} − α×∂_∂θiCost(θ0,θ1,…,θn)
+In the previous section, we looked at gradient descent for a single-variable function. However, in machine learning, we deal with multiple parameters simultaneously, which leads us to **multivariable gradient descent**.
 
-for each parameter θ_{i}​. This multivariable version of the algorithm updates each parameter based on its own partial derivative, which measures how much the cost changes with a small change in that particular parameter. By adjusting all parameters simultaneously, the algorithm efficiently searches for the point where the cost function is minimized.
+In multivariable gradient descent, the cost function J(\theta_0, \theta_1, \theta_2, ..., \theta_n) depends on multiple parameters ( \theta_0, \theta_1, \theta_2, ..., \theta_n \). The goal remains the same: minimize this cost function by iteratively adjusting each parameter.
 
-Consider the scenario where we are trying to fit the best possible line through a set of data points on a 2-dimensional plot. This line fitting involves determining two critical parameters: the slope (m) and the y-intercept (b) of the line. These parameters are essential because they define how the line positions itself relative to the data points. To help visualize this concept, the following animation demonstrates how the line adjusts incrementally with each iteration of the Gradient Descent algorithm. 
+The generalized formula for updating each parameter is:
+
+\[
+\theta_{i} = \theta_{i} - \alpha \frac{\partial}{\partial \theta_{i}} J(\theta_0, \theta_1, \theta_2, ..., \theta_n)
+\]
+
+Where:
+- \( \theta_{i} \) is the parameter being updated.
+- \( \alpha \) is the learning rate.
+- \( \frac{\partial}{\partial \theta_{i}} J(\theta_0, \theta_1, \theta_2, ..., \theta_n) \) is the partial derivative of the cost function with respect to \( \theta_{i} \), which indicates how much the cost function changes with a small change in \( \theta_{i} \).
+
+**Example: Linear Regression with Gradient Descent**
+
+To make this more concrete, consider the example of linear regression with two parameters: slope \( m \) and y-intercept \( b \). The hypothesis function is:
+
+\[
+h_\theta(x) = mx + b
+\]
+
+Here, \( m \) and \( b \) are the parameters to be optimized using gradient descent. The cost function for linear regression is:
+
+\[
+J(m, b) = \frac{1}{2m} \sum_{i=1}^{m} \left( h_\theta(x^{(i)}) - y^{(i)} \right)^2
+\]
+
+The goal is to minimize this cost function by updating \( m \) and \( b \) using gradient descent. The parameter updates are as follows:
+
+\[
+m = m - \alpha \frac{1}{m} \sum_{i=1}^{m} \left( (h_\theta(x^{(i)}) - y^{(i)}) x^{(i)} \right)
+\]
+
+\[
+b = b - \alpha \frac{1}{m} \sum_{i=1}^{m} \left( h_\theta(x^{(i)}) - y^{(i)} \right)
+\]
+
+This process is repeated until the cost function converges to a minimum.
+
+**Why Does Gradient Descent Work?**
+
+The core idea behind gradient descent is to use the slope (i.e., the derivative) of the cost function to determine the direction of steepest descent. If the slope is large and positive, gradient descent decreases the parameter value, and if it’s large and negative, it increases the parameter value.
+
+The learning rate \( \alpha \) plays an essential role in controlling the size of the steps:
+- A large \( \alpha \) results in larger steps, potentially overshooting the minimum.
+- A small \( \alpha \) results in smaller steps, leading to slower but more precise convergence.
+
+Gradient descent typically stops when the changes in the cost function are below a certain threshold or after a fixed number of iterations.
+
+**Conclusion**
+
+Gradient descent is a powerful optimization tool, fundamental to machine learning. Its ability to handle multiple parameters simultaneously makes it ideal for complex models. However, it is crucial to choose the right learning rate and apply feature scaling for efficient convergence.
