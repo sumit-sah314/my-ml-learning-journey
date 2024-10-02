@@ -1,0 +1,41 @@
+**COST FUNCTION DERIVATION**
+
+So far this summer, I have been deep-diving into Machine Learning-not just using the libraries for business solutions, but actually to understand the math lying behind the algorithms. My journey has been a bit random, and I haven’t always been consistent, but every now and then I stumble upon something that makes me stop and think. 💡
+
+One of those questions? ⁤⁤Why do we square errors in the cost function(1/2m∑(y′−y)^2)? ⁤⁤And why do we divide by 2m? 🤷‍♂️
+
+Was this formula derived mathematically or developed out of intuition? It's a little of both. Here is how a mathematician may have thought through it:
+
+Well, the first question to try and answer is: "How can we measure how far a model's prediction is off from true value?
+
+A mathematician may start by simply comparing predicted (y’) and observed (y). It is natural to consider their difference y’−y as a measure of the extent to which a prediction diverges from reality. Summing these errors would just cancel out positive with negative errors and therefore these ones may give rise to misleading conclusions.
+
+One possible solution is to take moduli |y’−y| of differences because thus all errors will contribute positively. Yet defining an error function has its main intention in minimizing errors and optimizing predictions (with the help of calculus). However since absolute values can’t be differentiated at zero, optimization gets complex.
+
+That's why the choice of squaring the errors, (y'-y)^2 turns out to be a natural one. Somebody might say "What about cubing or even using higher powers?" The reason is because cubing-or any other odd power-brings back the problem of negative values, whereas raising to even higher powers would make things more complicated than it should be. When one squares, the advantages are that it makes all errors become positive, it gives a smooth differentiable curve everywhere, and leads to absolute minimum. 
+
+Next, mathematicians might have realized that single-point errors do not paint the best picture in relation to the performance of the model on the whole dataset. We hence compute the average of all the errors; thereby getting 1/mƩ(y'-y)^2. 
+
+Going back to the cost function (1/2m∑(y′−y)^2) one might notice a ½ at the beginning. This is something which is often used by mathematicians for simplification purposes when optimizing. It should be noted that when you take derivatives of the squared error function then that results in pulling down a factor equal to two from this exponent. Including ½ cancels out this factor hence making it easier in working out derivatives.
+
+
+**GRADIENT DESCENT ALGORITHM**
+
+Having explored how errors are calculated, our next step is to figure out how to minimize these errors to improve the accuracy of our predictions.
+
+For those of you familiar with calculus, you know it involves finding the minimum value of a function. Sometimes, we know the derivative of a function directly, but often, especially with more complex functions, the derivative isn't clear, and we have to apply numerical methods to find this minimum. This scenario is typical when using computers, as they cannot replicate the manual process of calculus to find minima. Those of you who've taken a numerical analysis course might already be familiar with this technique known as the Gradient Descent Algorithm.
+Here’s how Gradient Descent works for a simple single-variable function, f(x): 
+x_{n}=x_{n−1}−α×f′(x_{n−1}) 
+
+This formula is designed based on the understanding that the farther you are from the minimum, the steeper the slope. If the slope is negative (indicating you are left of the minimum), you should move right. And, if you are far from the minimum, you take larger steps; if you are near, you take smaller steps. The presence of the derivative in the formula adjusts your step automatically—large negative slopes push you significantly forward, and positive slopes pull you back.
+
+We can adjust the α value, often called the learning rate, to control how quickly we approach this minimum. Once the derivative (the slope) nears zero, indicating proximity to the minimum, we can set a threshold to stop further iterations if the magnitude of f′(x) is sufficiently small.
+The animation on the left illustrates the concept using the function f(x)= x^2 + 2.
+
+Building on our understanding of Gradient Descent for single-variable functions, let's extend these concepts to the multivariable scenarios typical in machine learning. In these applications, cost functions often depend on multiple parameters that must be optimized simultaneously to enhance prediction accuracy. In machine learning, we frequently deal with models that involve several parameters. For functions of more than one variable, such as a cost function Cost(θ0,θ1,…,θn), the Gradient Descent formula generalizes as follows:
+
+θ_{i} = θ_{i} − α×∂_∂θiCost(θ0,θ1,…,θn)
+
+for each parameter θ_{i}​. This multivariable version of the algorithm updates each parameter based on its own partial derivative, which measures how much the cost changes with a small change in that particular parameter. By adjusting all parameters simultaneously, the algorithm efficiently searches for the point where the cost function is minimized.
+
+Consider the scenario where we are trying to fit the best possible line through a set of data points on a 2-dimensional plot. This line fitting involves determining two critical parameters: the slope (m) and the y-intercept (b) of the line. These parameters are essential because they define how the line positions itself relative to the data points. To help visualize this concept, the following animation demonstrates how the line adjusts incrementally with each iteration of the Gradient Descent algorithm. 
